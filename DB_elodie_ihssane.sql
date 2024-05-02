@@ -22,4 +22,15 @@ city varchar(50),
 state varchar(50),
 zip_code int 
 );
+
+create table staffs (
+staff_id  int identity(1,1) constraint PK_staffs primary key,
+first_name varchar(20),
+last_name varchar(20),
+phone varchar(13),
+email varchar(50),
+active varchar(50),
+store_id int ,
+manager_id int 
+);
  
