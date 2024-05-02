@@ -44,3 +44,10 @@ manager_id int
  store_id int,
  staff_id int
  );
+
+
+
+ create table categories (
+ category_id int identity(1,1) constraint PK_categories primary key,
+ category_name varchar(20),
+ );
