@@ -51,3 +51,8 @@ manager_id int
  category_id int identity(1,1) constraint PK_categories primary key,
  category_name varchar(20),
  );
+
+ create table brands (
+ brand_id int identity(1,1) constraint PK_brands primary key,
+ brand_name varchar(20),
+ );
