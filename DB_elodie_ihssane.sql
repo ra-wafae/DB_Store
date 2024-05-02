@@ -34,3 +34,13 @@ store_id int ,
 manager_id int 
 );
  
+ create table orders (
+ order_id int identity(1,1) constraint PK_orders primary key,
+ customer_id int,
+ order_status varchar(20) ,
+ order_date date ,
+ required_date date,
+ shipped_date date,
+ store_id int,
+ staff_id int
+ );
