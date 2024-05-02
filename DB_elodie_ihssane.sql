@@ -56,3 +56,12 @@ manager_id int
  brand_id int identity(1,1) constraint PK_brands primary key,
  brand_name varchar(20),
  );
+
+ create table products (
+ product_id int identity(1,1) constraint PK_products primary key,
+ product_name varchar(20),
+ brand_id int,
+ category_id int ,
+ model_year int,
+ list_price int 
+ );
