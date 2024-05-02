@@ -65,3 +65,9 @@ manager_id int
  model_year int,
  list_price int 
  );
+
+ create table stocks (
+ store_id int,
+ product_id int ,
+ quantity int 
+ );
