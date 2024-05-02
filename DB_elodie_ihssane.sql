@@ -71,3 +71,12 @@ manager_id int
  product_id int ,
  quantity int 
  );
+
+ create table order_items (
+ order_id int ,
+ item_id int identity(1,1) constraint PK_order_items primary key,
+ product_id int,
+ quantity int ,
+ list_price int,
+ discount int 
+ );
