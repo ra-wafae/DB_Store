@@ -4,6 +4,13 @@
 
 -- calculate discount for an order item
 
+CREATE FUNCTION calculateDiscount (@OrderId int, @itemId int)
+RETURNS int
+as
+begin
+	declare @oldPrice int;
+	select @oldPrice = 
+
 -- calculate total price the un order item
 
 -- get number of specific product sltill in stock in a specific store
