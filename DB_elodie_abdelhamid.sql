@@ -30,9 +30,54 @@ begin
 end;
 
 
--- get number of specific product sltill in stock in a specific store
+-- get number of specific product still in stock in a specific store
+
+create function productStillInStock(@productId int, @storeId int)
+returns int
+as
+begin
+	declare @num int;
+	select @num = quantity
+    FROM stocks
+    WHERE store_id = @storeId
+    AND product_id = @productId;
+	return @num;
+end;
+
 
 -- get orders from a specific customer
+
+CREATE FUNCTION GetCustomerOrders(@customerId INT)
+RETURNS TABLE
+AS
+RETURN
+(
+    SELECT *
+    FROM orders
+    WHERE customer_id = @customerId
+);
+
+
+
+-- calculate the total sales amount for a given store over a specified period
+CREATE FUNCTION CalculateTotalSalesForStore(
+    @store_id INT,
+    @start_date DATE,
+    @end_date DATE
+)
+RETURNS int
+AS
+BEGIN
+    DECLARE @total_sales int;
+    
+    SELECT @total_sales = COALESCE(dbo.orderTotalPrice(oi.order_id), 0)
+    FROM orders o
+    JOIN order_items oi ON o.order_id = oi.order_id
+    WHERE o.store_id = @store_id
+    AND o.order_date BETWEEN @start_date AND @end_date;
+    
+    RETURN @total_sales;
+END;
 
 
 
