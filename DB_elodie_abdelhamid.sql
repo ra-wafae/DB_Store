@@ -2,16 +2,33 @@
 /*--------------------------------[ F U N C T I O N S ]--------------------------------*/
 /*-------------------------------------------------------------------------------------*/
 
--- calculate discount for an order item
+-- calculate the new price of an item after the discount
 
-CREATE FUNCTION calculateDiscount (@OrderId int, @itemId int)
+CREATE FUNCTION priceAfterDiscount (@OrderId int)
 RETURNS int
 as
 begin
 	declare @oldPrice int;
-	select @oldPrice = 
+	declare @newPrice int;
+	select @oldPrice = list_price from order_items where order_id = @OrderId ;
+	set @newPrice = @oldPrice - (@oldPrice * (select discount from order_items where order_id = @OrderId ) / 100);
+	return @newPrice;
+end;
 
--- calculate total price the un order item
+
+-- calculate total price of an order 
+
+create function orderTotalPrice(@orderId int)
+returns int
+as
+begin
+	declare @totalPrice int;
+	select @totalPrice = sum(quantity * dbo.priceAfterDiscount (@OrderId))
+	from order_items 
+	where order_id = @OrderId;
+	return @totalPrice;
+end;
+
 
 -- get number of specific product sltill in stock in a specific store
 
