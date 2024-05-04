@@ -92,3 +92,24 @@ REFERENCES staffs (staff_id);
 ALTER TABLE orders
 ADD CONSTRAINT store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
+
+ALTER TABLE staffs
+ADD CONSTRAINT staffs_id FOREIGN KEY (staff_id)
+REFERENCES staffs (staff_id);
+
+ALTER TABLE staffs
+ADD CONSTRAINT stores_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
+
+ALTER TABLE order_items
+ADD CONSTRAINT order_id FOREIGN KEY (order_id)
+REFERENCES orders (order_id);
+
+ALTER TABLE order_items
+ADD CONSTRAINT product_id FOREIGN KEY (product_id)
+REFERENCES products (product_id);
+
+ALTER TABLE products
+ADD CONSTRAINT category_id FOREIGN KEY (category_id)
+REFERENCES categories (category_id);
+
