@@ -80,3 +80,88 @@ manager_id int
  list_price int,
  discount int 
  );
+
+   ALTER TABLE orders
+ADD CONSTRAINT customer_id FOREIGN KEY (customer_id)
+REFERENCES customers (customer_id);
+
+ALTER TABLE orders
+ADD CONSTRAINT staff_id FOREIGN KEY (staff_id)
+REFERENCES staffs (staff_id);
+
+ALTER TABLE orders
+ADD CONSTRAINT store_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
+
+ALTER TABLE staffs
+ADD CONSTRAINT manager_id FOREIGN KEY (manager_id)
+REFERENCES staffs (staff_id);
+
+ALTER TABLE staffs
+ADD CONSTRAINT stores_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
+
+ALTER TABLE order_items
+ADD CONSTRAINT order_id FOREIGN KEY (order_id)
+REFERENCES orders (order_id);
+
+ALTER TABLE order_items
+ADD CONSTRAINT product_id FOREIGN KEY (product_id)
+REFERENCES products (product_id);
+
+ALTER TABLE products
+ADD CONSTRAINT category_id FOREIGN KEY (category_id)
+REFERENCES categories (category_id);
+
+ALTER TABLE products
+ADD CONSTRAINT brand_id FOREIGN KEY (brand_id)
+REFERENCES brands (brand_id);
+
+ALTER TABLE stocks
+ADD CONSTRAINT products_id FOREIGN KEY (product_id)
+REFERENCES products (product_id);
+
+ALTER TABLE stocks
+ADD CONSTRAINT store_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
+
+ALTER TABLE customers
+ADD CONSTRAINT check_numero_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_staff_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_email_staff
+CHECK (CHARINDEX('@', email) > 0);
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_name_staffs
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
+
+ALTER TABLE customers
+ADD CONSTRAINT check_name_customer
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
+
+ALTER TABLE orders
+ADD CONSTRAINT check_status
+CHECK (
+   order_status IN ('confirmed', 'rejected', 'in process')
+);
+
+ALTER TABLE order_items
+ADD CONSTRAINT check_discount_range 
+CHECK (
+    discount >= 0 AND discount <= 100
+);
+
+
+
+
+
