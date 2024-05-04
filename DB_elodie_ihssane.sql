@@ -79,4 +79,3 @@ manager_id int
  quantity int ,
  list_price int,
  discount int 
- );
