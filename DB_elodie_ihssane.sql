@@ -79,3 +79,16 @@ manager_id int
  quantity int ,
  list_price int,
  discount int 
+ );
+
+   ALTER TABLE orders
+ADD CONSTRAINT customer_id FOREIGN KEY (customer_id)
+REFERENCES customers (customer_id);
+
+ALTER TABLE orders
+ADD CONSTRAINT staff_id FOREIGN KEY (staff_id)
+REFERENCES staffs (staff_id);
+
+ALTER TABLE orders
+ADD CONSTRAINT store_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
