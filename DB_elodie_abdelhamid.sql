@@ -15,7 +15,6 @@ begin
 	return @newPrice;
 end;
 
-
 -- calculate total price of an order 
 
 create function orderTotalPrice(@orderId int)
@@ -28,7 +27,6 @@ begin
 	where order_id = @OrderId;
 	return @totalPrice;
 end;
-
 
 -- get number of specific product still in stock in a specific store
 
@@ -44,7 +42,6 @@ begin
 	return @num;
 end;
 
-
 -- get orders from a specific customer
 
 CREATE FUNCTION GetCustomerOrders(@customerId INT)
@@ -57,9 +54,8 @@ RETURN
     WHERE customer_id = @customerId
 );
 
-
-
 -- calculate the total sales amount for a given store over a specified period
+
 CREATE FUNCTION CalculateTotalSalesForStore(
     @store_id INT,
     @start_date DATE,
@@ -78,23 +74,77 @@ BEGIN
     
     RETURN @total_sales;
 END;
-
-
-
-
-
-
+                                                                                                                                                                                                              
 /*---------------------------------------------------------------------------------------*/
 /*--------------------------------[ P R O C E D U R E S ]--------------------------------*/
 /*---------------------------------------------------------------------------------------*/
 
 -- place an order
+CREATE PROCEDURE PlaceOrder
+    @customer_id INT,
+    @order_status VARCHAR(20),
+    @order_date DATE,
+    @required_date DATE,
+    @shipped_date DATE,
+    @store_id INT,
+    @staff_id INT
+AS
+BEGIN
+    INSERT INTO orders (customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id)
+    VALUES (@customer_id, @order_status, @order_date, @required_date, @shipped_date, @store_id, @staff_id);
+END;
 
 -- place order_item
+CREATE PROCEDURE PlaceOrderItem
+    @order_id INT,
+    @product_id INT,
+    @quantity INT,
+    @list_price INT,
+    @discount INT
+AS
+BEGIN
+    INSERT INTO order_items (order_id, product_id, quantity, list_price, discount)
+    VALUES (@order_id, @product_id, @quantity, @list_price, @discount);
+END;
+
 
 -- update stock quantity for a product in a store (adding products)
+CREATE PROCEDURE UpdateStockQuantity_Add
+    @store_id INT,
+    @product_id INT,
+    @quantity INT
+AS
+BEGIN
+    UPDATE stocks
+    SET quantity = quantity + @quantity
+    WHERE store_id = @store_id AND product_id = @product_id;
+END;
+
 
 -- update stock quantity in a store (removing products)
+CREATE PROCEDURE UpdateStockQuantity_Remove
+    @store_id INT,
+    @product_id INT,
+    @quantity INT
+AS
+BEGIN
+    UPDATE stocks
+    SET quantity = quantity - @quantity
+    WHERE store_id = @store_id AND product_id = @product_id;
+END;
+
 
 -- add an new product
+CREATE PROCEDURE AddNewProduct
+    @product_name VARCHAR(20),
+    @brand_id INT,
+    @category_id INT,
+    @model_year INT,
+    @list_price INT
+AS
+BEGIN
+    INSERT INTO products (product_name, brand_id, category_id, model_year, list_price)
+    VALUES (@product_name, @brand_id, @category_id, @model_year, @list_price);
+END;
+
 
