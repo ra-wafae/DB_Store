@@ -94,7 +94,7 @@ ADD CONSTRAINT store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
 
 ALTER TABLE staffs
-ADD CONSTRAINT staffs_id FOREIGN KEY (staff_id)
+ADD CONSTRAINT manager_id FOREIGN KEY (manager_id)
 REFERENCES staffs (staff_id);
 
 ALTER TABLE staffs
@@ -124,4 +124,44 @@ REFERENCES products (product_id);
 ALTER TABLE stocks
 ADD CONSTRAINT store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
+
+ALTER TABLE customers
+ADD CONSTRAINT check_numero_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_staff_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_email_staff
+CHECK (CHARINDEX('@', email) > 0);
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_name_staffs
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
+
+ALTER TABLE customers
+ADD CONSTRAINT check_name_customer
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
+
+ALTER TABLE orders
+ADD CONSTRAINT check_status
+CHECK (
+   order_status IN ('confirmed', 'rejected', 'in process')
+);
+
+ALTER TABLE order_items
+ADD CONSTRAINT check_discount_range 
+CHECK (
+    discount >= 0 AND discount <= 100
+);
+
+
+
+
 
