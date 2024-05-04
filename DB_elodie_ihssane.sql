@@ -113,3 +113,15 @@ ALTER TABLE products
 ADD CONSTRAINT category_id FOREIGN KEY (category_id)
 REFERENCES categories (category_id);
 
+ALTER TABLE products
+ADD CONSTRAINT brand_id FOREIGN KEY (brand_id)
+REFERENCES brands (brand_id);
+
+ALTER TABLE stocks
+ADD CONSTRAINT products_id FOREIGN KEY (product_id)
+REFERENCES products (product_id);
+
+ALTER TABLE stocks
+ADD CONSTRAINT store_id FOREIGN KEY (store_id)
+REFERENCES stores (store_id);
+
