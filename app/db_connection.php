@@ -8,22 +8,13 @@ try {
     $conn = new PDO("sqlsrv:Server=$servername;Database=$dbname", $username, $password);
     // Set PDO to throw exceptions on error
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully"; // Optional: Display a message if connection is successful
+    echo "<script>console.log('data base Connected successfully');</script>"; // Optional: Display a message if connection is successful
 } catch (PDOException $e) {
-    echo "Connection faileeed: " . $e->getMessage();
+    echo "<script> console.log('data base Connection faileeed: " . $e->getMessage() . ");</script>";
 }
 
 
-// $dsn = 'odbc:YOUR_DSN_NAME';
-// $username = 'your_username';
-// $password = 'your_password';
 
-// try {
-//     $pdo = new PDO($dsn, $username, $password);
-//     echo "Connected successfully!";
-// } catch (PDOException $e) {
-//     echo "Connection failed: " . $e->getMessage();
-// }
 
 
 ?>
