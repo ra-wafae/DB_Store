@@ -61,7 +61,7 @@ JOIN
 JOIN 
     categories c ON c.category_id = p.category_id 
 WHERE 
-    s.store_id = 1";
+    s.store_id = " . $store_result["store_id"] . ";";
 
 $items_result = $conn->query($items_query);
 
