@@ -31,7 +31,7 @@ phone varchar(13),
 email varchar(50),
 active varchar(50),
 store_id int ,
-manager_id int 
+manager_id int NULL
 );
  
  create table orders (
@@ -122,7 +122,7 @@ ADD CONSTRAINT products_id FOREIGN KEY (product_id)
 REFERENCES products (product_id);
 
 ALTER TABLE stocks
-ADD CONSTRAINT store_id FOREIGN KEY (store_id)
+ADD CONSTRAINT PK_store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
 
 ALTER TABLE customers
