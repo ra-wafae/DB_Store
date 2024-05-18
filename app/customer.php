@@ -1,8 +1,6 @@
 <?php
 require_once("db_connection.php");
-// get ordes from data base
-// $customer_order_query = "select o.order_id, o.order_status, o.order_date, o.required_date, o.shipped_date, sr.store_name, sf.first_name + ' ' + sf.last_name as staff_full_name from orders o , stores sr , staffs sf where o.store_id = sr.store_id and o.staff_id = sf.staff_id and o.order_id = 1;";
-// $customer_order_result = $conn->query($customer_order_query);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,27 +8,32 @@ require_once("db_connection.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
     <title>customer Page</title>
 </head>
 
 <body>
+<?php 
+        require("./header.php")
+    ?>
     <h1>customer</h1>
     <h3>in this page we will test what the customer can do</h3>
     <section class="top-section">
         <div class="orders-list">
-            <p>in this section the customer can see all his orders </p>
+            <p >in this section the customer can see all his orders </p>
             <?php
             // Execute the SQL query to fetch customer order data
-            $customer_order_query = "SELECT o.order_id, o.order_status, o.order_date, o.required_date, o.shipped_date, sr.store_name, sf.first_name + ' ' + sf.last_name AS staff_full_name FROM orders o, stores sr, staffs sf WHERE o.store_id = sr.store_id AND o.staff_id = sf.staff_id AND o.order_id = 1";
+            $customer_order_query = "SELECT o.order_id, o.order_status, o.order_date, o.required_date, o.shipped_date, sr.store_name, sf.first_name + ' ' + sf.last_name AS staff_full_name FROM orders o, stores sr, staffs sf WHERE o.store_id = sr.store_id AND o.staff_id = sf.staff_id AND o.customer_id = 6";
             $customer_order_result = $conn->query($customer_order_query);
 
             // Fetch the first row
-            $row = $customer_order_result->fetch(PDO::FETCH_ASSOC);
+            $row = $customer_order_result->fetchAll(PDO::FETCH_ASSOC);
 
             // Check if the fetched row is not empty
-            if ($row) {
+            if (count($row)) {
                 // Output table header
-                echo "<table border='1'>
+                echo "<table border='1' class=\"table table-striped table-hover\">
             <tr>
                 <th>Order ID</th>
                 <th>Status</th>
@@ -40,17 +43,19 @@ require_once("db_connection.php");
                 <th>Store Name</th>
                 <th>Staff Name</th>
             </tr>";
+                foreach($row as $r){
 
-                // Output data
-                echo "<tr>
-            <td>{$row['order_id']}</td>
-            <td>{$row['order_status']}</td>
-            <td>{$row['order_date']}</td>
-            <td>{$row['required_date']}</td>
-            <td>{$row['shipped_date']}</td>
-            <td>{$row['store_name']}</td>
-            <td>{$row['staff_full_name']}</td>
-        </tr>";
+                    // Output data
+                    echo "<tr>
+                    <td>{$r['order_id']}</td>
+                    <td>{$r['order_status']}</td>
+                    <td>{$r['order_date']}</td>
+                    <td>{$r['required_date']}</td>
+                    <td>{$r['shipped_date']}</td>
+                    <td>{$r['store_name']}</td>
+                    <td>{$r['staff_full_name']}</td>
+                    </tr>";
+                }
 
                 // Close table
                 echo "</table>";
@@ -95,6 +100,7 @@ require_once("db_connection.php");
 
         </div>
     </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
