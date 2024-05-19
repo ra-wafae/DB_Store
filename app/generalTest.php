@@ -132,6 +132,7 @@ require_once("./db_connection.php");
         <br>
         <button type="submit">Calculate Total Sales</button>
     </form>
+    
 </div>
 <div class="function-card">
     <h5>Find Customer By Name</h5>
@@ -207,6 +208,7 @@ require_once("./db_connection.php");
                 });
             });
         });
+
     </script>
         <script>
        $(document).ready(function(){

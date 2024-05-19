@@ -32,7 +32,7 @@ require_once("./db_connection.php");
               <img src="assets/img/logo.png" alt="Global">
               <p>ELODIE</p>
             </a>
-            <button class="header--cta cta">HirS e Us</button>
+
             <div class="header--nav-toggle">
               <span></span>
             </div>
@@ -55,7 +55,7 @@ require_once("./db_connection.php");
 
                   <span class="btn-background"></span>
                   </button>
-                  <img src="assets/img/introduction-visual.png" alt="Welcome">
+                  <img src="assets/img/Server-amico.svg" alt="Welcome">
                 </div>
                 <div class="intro--options">
                   <a href="#0">
@@ -85,10 +85,8 @@ require_once("./db_connection.php");
                   $tables = $conn->query($query);
                   while ($row = $tables->fetch(PDO::FETCH_ASSOC)) {
                     echo '<div class="table-select-card" data-table="' . $row["name"] . '">
-                        <div class="table-select-card-inside">
-                        <h5>' . $row["name"] . '</h5>
-                        </div>
-                      </div>';
+                            <button><h5>' . $row["name"] . '</h5></button>
+                          </div>';
                   }
                   ?>
                 </div>
@@ -115,73 +113,175 @@ require_once("./db_connection.php");
                   <div id="putValues">
 
                   </div>
-                  <button type="submit">Insert Data</button>
+                  <button type="submit" class="bookmarkBtn">
+                    <span class="IconContainer">
+                      <svg viewBox="0 0 384 512" height="0.9em" class="icon">
+                        <path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"></path>
+                      </svg>
+                    </span>
+                    <p class="text">TEST query</p>
+                  </button>
                 </form>
               </div>
             </li>
             <li class="l-section section">
               <div class="hire">
-                
+
                 <div class="function-card">
                   <h5>calculate Price After Discount</h5>
                   <p>This function calculates the total price after applying a discount based on the original price, discount percentage, and quantity.</p>
                   <form class="functionForm">
-                    <input type="hidden" name="query" value="select dbo.calculatePriceAfterDiscount">
-                    <label for="arguments[]">Original Price:</label>
-                    <input type="number" name="arguments[]" id="arguments[]" required>
-                    <br>
-                    <label for="arguments[]">Discount Percentage:</label>
-                    <input type="number" name="arguments[]" id="arguments[]" required>
-                    <br>
-                    <label for="arguments[]">Quantity:</label>
-                    <input type="number" name="arguments[]" id="arguments[]" required>
-                    <br>
-                    <button type="submit">Calculate</button>
+                    <div>
+                      <input type="hidden" name="query" value="select dbo.calculatePriceAfterDiscount">
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" id="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Original Price:</label>
+                      </div>
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" id="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Discount Percentage:</label>
+                      </div>
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" id="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Quantity:</label>
+                      </div>
+                    </div>
+                    <button class="cssbuttons-io-button">
+                      calculate
+                      <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </button>
                   </form>
                 </div>
                 <div class="function-card">
                   <h5>Order Total Price</h5>
                   <p>This function calculates the total price for a given order based on the order ID.</p>
                   <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT dbo.orderTotalPrice">
-                    <label for="arguments[]">Order ID:</label>
-                    <input type="number" name="arguments[]" required>
-                    <br>
-                    <button type="submit">Calculate</button>
+                    <div>
+                      <input type="hidden" name="query" value="SELECT dbo.orderTotalPrice">
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Order ID:</label>
+                      </div>
+                    </div>
+                    <button class="cssbuttons-io-button">
+                      calculate
+                      <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </button>
+
                   </form>
                 </div>
                 <div class="function-card">
                   <h5>Product Still In Stock</h5>
                   <p>This function checks if a product is still in stock at a given store based on the product ID and store ID.</p>
                   <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT dbo.productStillInStock">
-                    <label for="arguments[]">Product ID:</label>
-                    <input type="number" name="arguments[]" required>
-                    <br>
-                    <label for="arguments[]">Store ID:</label>
-                    <input type="number" name="arguments[]" required>
-                    <br>
-                    <button type="submit">Check Stock</button>
+                    <div>
+                      <input type="hidden" name="query" value="SELECT dbo.productStillInStock">
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Product ID:</label>
+                      </div>
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Store ID:</label>
+                      </div>
+                    </div>
+                    <button class="cssbuttons-io-button">
+                      Check Stock
+                      <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </button>
                   </form>
                 </div>
-                
+
               </div>
             </li>
             <li class="l-section section">
               <div class="hire">
-              <div class="function-card">
+                <div class="function-card">
+                  <h5>Calculate Total Sales For Store</h5>
+                  <p>This function calculates the total sales for a store within a specified date range.</p>
+                  <form class="functionForm">
+                    <div>
+                      <input type="hidden" name="query" value="SELECT dbo.CalculateTotalSalesForStore">
+                      <div class="input-containerh">
+                        <input type="number" name="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Store ID:</label>
+                      </div>
+                      <div class="input-containerh">
+                        <input type="date" name="arguments[]" required="" autocomplete="off">
+                        <label for="arguments[]">Start Date:</label>
+                      </div>
+                      <div class="input-containerh">
+                        <label for="arguments[]">End Date:</label>
+                        <input type="date" name="arguments[]" required="" autocomplete="off">
+                      </div>
+                    </div>
+                    <button class="cssbuttons-io-button">
+                      Calculate Total Sales
+                      <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </button>
+
+                  </form>
+                </div>
+                <div class="function-card">
+                  <h5>Find Customer By Name</h5>
+                  <p>This function retrieves the top 5 customers whose first name or last name matches the provided partial name.</p>
+                  <form class="functionForm">
+                    <div>
+                      <input type="hidden" name="query" value="SELECT * FROM dbo.FindCustomerByName">
+                      <div class="input-containerh">
+                        <label for="arguments[]">Partial Name:</label>
+                        <input type="text" name="arguments[]" required="" autocomplete="off">
+                      </div>
+                    </div>
+                    <button class="cssbuttons-io-button">
+                      Find Customers
+                      <div class="icon">
+                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M0 0h24v24H0z" fill="none"></path>
+                          <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </button>
+
+                  </form>
+                </div>
+              </div>
+            </li>
+            <li class="l-section section">
+              <div class="hire">
+                <div class="function-card">
                   <h5>Calculate Total Sales For Store</h5>
                   <p>This function calculates the total sales for a store within a specified date range.</p>
                   <form class="functionForm">
                     <input type="hidden" name="query" value="SELECT dbo.CalculateTotalSalesForStore">
                     <label for="arguments[]">Store ID:</label>
-                    <input type="number" name="arguments[]" required>
+                    <input type="number" name="arguments[]" required="" autocomplete="off">
                     <br>
                     <label for="arguments[]">Start Date:</label>
-                    <input type="date" name="arguments[]" required>
+                    <input type="date" name="arguments[]" required="" autocomplete="off">
                     <br>
                     <label for="arguments[]">End Date:</label>
-                    <input type="date" name="arguments[]" required>
+                    <input type="date" name="arguments[]" required="" autocomplete="off">
                     <br>
                     <button type="submit">Calculate Total Sales</button>
                   </form>
@@ -192,39 +292,7 @@ require_once("./db_connection.php");
                   <form class="functionForm">
                     <input type="hidden" name="query" value="SELECT * FROM dbo.FindCustomerByName">
                     <label for="arguments[]">Partial Name:</label>
-                    <input type="text" name="arguments[]" required>
-                    <br>
-                    <button type="submit">Find Customers</button>
-                  </form>
-                </div>
-              </div>
-            </li>
-            <li class="l-section section">
-              <div class="hire">
-              <div class="function-card">
-                  <h5>Calculate Total Sales For Store</h5>
-                  <p>This function calculates the total sales for a store within a specified date range.</p>
-                  <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT dbo.CalculateTotalSalesForStore">
-                    <label for="arguments[]">Store ID:</label>
-                    <input type="number" name="arguments[]" required>
-                    <br>
-                    <label for="arguments[]">Start Date:</label>
-                    <input type="date" name="arguments[]" required>
-                    <br>
-                    <label for="arguments[]">End Date:</label>
-                    <input type="date" name="arguments[]" required>
-                    <br>
-                    <button type="submit">Calculate Total Sales</button>
-                  </form>
-                </div>
-                <div class="function-card">
-                  <h5>Find Customer By Name</h5>
-                  <p>This function retrieves the top 5 customers whose first name or last name matches the provided partial name.</p>
-                  <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT * FROM dbo.FindCustomerByName">
-                    <label for="arguments[]">Partial Name:</label>
-                    <input type="text" name="arguments[]" required>
+                    <input type="text" name="arguments[]" required="" autocomplete="off">
                     <br>
                     <button type="submit">Find Customers</button>
                   </form>
@@ -267,8 +335,20 @@ require_once("./db_connection.php");
           },
           success: function(response) {
             $("#dialog").html(response).dialog({
+              modal: true,
               width: 1000, // Set the width of the dialog
-              height: 600 // Set the height of the dialog
+              height: 600, // Set the height of the dialog
+              open: function(event, ui) {
+                $('body').css('overflow', 'hidden'); // Disable scrolling
+              },
+              close: function(event, ui) {
+                $('body').css('overflow', 'auto'); // Enable scrolling
+              },
+              buttons: {
+                Ok: function() {
+                  $(this).dialog("close");
+                }
+              }
             });
           }
         });
@@ -295,12 +375,11 @@ require_once("./db_connection.php");
           }
         });
       });
-
+      var ddd = true;
       // Load form fields based on the selected table
       $("#table").change(function() {
         var tableName = $(this).val();
         var statement = $("#Statement").val();
-
         $.ajax({
           url: 'load_form_fields.php',
           method: 'POST',

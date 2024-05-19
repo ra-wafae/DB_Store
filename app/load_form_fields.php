@@ -26,9 +26,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo '<h3>Enter ' . $statement . ' Statement for ' . $tableName . '</h3>';
     echo '<input type="hidden" name="tableName" value="' . $tableName . '">';
     echo '<input type="hidden" name="statement" value="' . $statement . '">';
+    echo '<div class="putValues">';
     foreach ($columns as $column) {
-        echo '<label for="' . $column . '">' . $column . ':</label>';
-        echo '<input type="text" id="' . $column . '" name="' . $column . '"><br>';
+        echo '<div class="input-containerh">';
+        echo '  <input type="text" id="' . $column . '" name="' . $column . '" required="" autocomplete="off" >';
+        echo '  <label for="' . $column . '">' . $column . ':</label>';
+        echo '</div>';
     }
+    echo '</div>';
 }
 ?>
