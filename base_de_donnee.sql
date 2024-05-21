@@ -347,3 +347,135 @@ BEGIN
 END;
 go;
 
+
+/*---------------------------------------------------------------------------------------*/
+ /*-------------------------------------[ V I E W S ]------------------------------------*/
+/*--------------------------------------------------------------------------------------*/
+
+--Customer Orders View
+
+
+CREATE VIEW Customer_order AS
+SELECT 
+    o.order_id, 
+    o.order_status, 
+    o.order_date, 
+    o.required_date, 
+    o.shipped_date, 
+    sr.store_name, 
+    c.first_name + ' ' + c.last_name AS customer_full_name
+FROM 
+    orders o
+JOIN 
+    stores sr ON o.store_id = sr.store_id
+JOIN 
+    customers c ON o.customer_id = c.customer_id;
+
+
+	-- Showing The View 
+		SELECT * FROM Customer_order;
+
+
+--Product Information View
+
+CREATE VIEW Product_info AS
+SELECT 
+    p.product_name, 
+    b.brand_name, 
+    c.category_name, 
+    p.model_year, 
+    p.list_price, 
+    s.quantity 
+FROM 
+    stocks s 
+JOIN 
+    products p ON s.product_id = p.product_id 
+JOIN 
+    brands b ON b.brand_id = p.brand_id 
+JOIN 
+    categories c ON c.category_id = p.category_id;
+
+
+	-- Showing The View 
+		SELECT * FROM Product_info;
+
+--Products in Staff Store View
+
+
+CREATE VIEW Products_in_Staff_Store AS
+SELECT 
+    p.product_id, 
+    p.product_name, 
+    b.brand_name, 
+    c.category_name, 
+    p.model_year, 
+    p.list_price, 
+    s.quantity 
+FROM 
+    products p 
+JOIN 
+    stocks s ON s.product_id = p.product_id
+JOIN 
+    stores st ON st.store_id = s.store_id 
+JOIN 
+    staffs sf ON st.store_id = sf.store_id
+LEFT JOIN 
+    brands b ON p.brand_id = b.brand_id
+LEFT JOIN 
+    categories c ON p.category_id = c.category_id;
+
+	--Showing the View 
+		SELECT * FROM Products_in_Staff_Store;
+
+--Product Info for Customer View
+
+
+CREATE VIEW Product_info_for_Customer AS
+SELECT 
+    o.order_id, 
+    o.order_status, 
+    o.order_date, 
+    o.required_date, 
+    o.shipped_date, 
+    sr.store_name, 
+    sf.first_name + ' ' + sf.last_name AS staff_full_name
+FROM 
+    orders o
+JOIN 
+    stores sr ON o.store_id = sr.store_id 
+JOIN 
+    staffs sf ON o.staff_id = sf.staff_id;
+
+	--Showing The View
+		SELECT * FROM Product_info_for_Customer;
+
+--Store Names View
+
+
+CREATE VIEW Store_names AS
+SELECT 
+    store_id, 
+    store_name 
+FROM 
+    stores;
+
+	--Showing The View
+		SELECT * FROM Store_names;
+
+--Total Sales by Store
+
+CREATE VIEW Total_sales_by_store AS
+SELECT 
+    st.store_name, 
+    SUM(oi.list_price * oi.quantity) AS total_sales
+FROM 
+    order_items oi
+JOIN 
+    orders o ON oi.order_id = o.order_id
+JOIN 
+    stores st ON o.store_id = st.store_id
+GROUP BY 
+    st.store_name;
+
+	--Showing The View
+		SELECT * FROM Total_sales_by_store;
