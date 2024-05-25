@@ -1,234 +1,245 @@
--- Create the database
-CREATE DATABASE BD_Store;
-GO
-
--- Use the database
-USE BD_Store;
-GO
-
--- Create tables
-CREATE TABLE customers (
-    customer_id INT IDENTITY(1,1) CONSTRAINT PK_customers PRIMARY KEY,
-    first_name VARCHAR(20),
-    last_name VARCHAR(20),
-    phone VARCHAR(13),
-    email VARCHAR(50),
-    street VARCHAR(50),
-    city VARCHAR(50),
-    state VARCHAR(50),
-    zip_code INT
+create database BD_Store;
+go
+use BD_Store;
+go
+create table customers (
+customer_id int identity(1,1) constraint PK_customers primary key,
+first_name varchar(20),
+last_name varchar(20),
+phone varchar(13),
+email varchar(50),
+street varchar(50),
+city varchar(50),
+state varchar(50),
+zip_code int 
 );
-GO
+go
 
-CREATE TABLE stores (
-    store_id INT IDENTITY(1,1) CONSTRAINT PK_stores PRIMARY KEY,
-    store_name VARCHAR(20),
-    phone VARCHAR(13),
-    email VARCHAR(50),
-    street VARCHAR(50),
-    city VARCHAR(50),
-    state VARCHAR(50),
-    zip_code INT
+create table stores (
+store_id int identity(1,1) constraint PK_stores primary key,
+store_name varchar(20),
+phone varchar(13),
+email varchar(50),
+street varchar(50),
+city varchar(50),
+state varchar(50),
+zip_code int 
 );
-GO
+go
 
-CREATE TABLE staffs (
-    staff_id INT IDENTITY(1,1) CONSTRAINT PK_staffs PRIMARY KEY,
-    first_name VARCHAR(20),
-    last_name VARCHAR(20),
-    phone VARCHAR(13),
-    email VARCHAR(50),
-    active VARCHAR(50),
-    store_id INT,
-    manager_id INT NULL
+create table staffs (
+staff_id  int identity(1,1) constraint PK_staffs primary key,
+first_name varchar(20),
+last_name varchar(20),
+phone varchar(13),
+email varchar(50),
+active varchar(50),
+store_id int ,
+manager_id int NULL
 );
-GO
+go
+ 
+ create table orders (
+ order_id int identity(1,1) constraint PK_orders primary key,
+ customer_id int,
+ order_status varchar(20) ,
+ order_date date ,
+ required_date date,
+ shipped_date date,
+ store_id int,
+ staff_id int
+ );
+ go
 
-CREATE TABLE orders (
-    order_id INT IDENTITY(1,1) CONSTRAINT PK_orders PRIMARY KEY,
-    customer_id INT,
-    order_status VARCHAR(20),
-    order_date DATE,
-    required_date DATE,
-    shipped_date DATE,
-    store_id INT,
-    staff_id INT
-);
-GO
 
-CREATE TABLE categories (
-    category_id INT IDENTITY(1,1) CONSTRAINT PK_categories PRIMARY KEY,
-    category_name VARCHAR(20)
-);
-GO
 
-CREATE TABLE brands (
-    brand_id INT IDENTITY(1,1) CONSTRAINT PK_brands PRIMARY KEY,
-    brand_name VARCHAR(20)
-);
-GO
+ create table categories (
+ category_id int identity(1,1) constraint PK_categories primary key,
+ category_name varchar(20),
+ );
+ go
 
-CREATE TABLE products (
-    product_id INT IDENTITY(1,1) CONSTRAINT PK_products PRIMARY KEY,
-    product_name VARCHAR(20),
-    brand_id INT,
-    category_id INT,
-    model_year INT,
-    list_price INT
-);
-GO
+ create table brands (
+ brand_id int identity(1,1) constraint PK_brands primary key,
+ brand_name varchar(20),
+ );
+ go
 
-CREATE TABLE stocks (
-    store_id INT,
-    product_id INT,
-    quantity INT
-);
-GO
+ create table products (
+ product_id int identity(1,1) constraint PK_products primary key,
+ product_name varchar(20),
+ brand_id int,
+ category_id int ,
+ model_year int,
+ list_price int 
+ );
+ go
 
-CREATE TABLE order_items (
-    order_id INT,
-    item_id INT IDENTITY(1,1) CONSTRAINT PK_order_items PRIMARY KEY,
-    product_id INT,
-    quantity INT,
-    list_price INT,
-    discount INT
-);
-GO
+ create table stocks (
+ store_id int,
+ product_id int ,
+ quantity int 
+ );
+ go
 
--- Add constraints
-ALTER TABLE orders
-ADD CONSTRAINT FK_orders_customer_id FOREIGN KEY (customer_id)
+ create table order_items (
+ order_id int ,
+ item_id int identity(1,1) constraint PK_order_items primary key,
+ product_id int,
+ quantity int ,
+ list_price int,
+ discount int 
+ );
+ go
+
+  /*--------------------------------------------------------------------------------------*/
+ /*--------------------------------[ C O N S T R A I N T ]-------------------------------*/
+/*--------------------------------------------------------------------------------------*/
+   ALTER TABLE orders
+ADD CONSTRAINT customer_id FOREIGN KEY (customer_id)
 REFERENCES customers (customer_id);
-GO
 
 ALTER TABLE orders
-ADD CONSTRAINT FK_orders_staff_id FOREIGN KEY (staff_id)
+ADD CONSTRAINT staff_id FOREIGN KEY (staff_id)
 REFERENCES staffs (staff_id);
-GO
 
 ALTER TABLE orders
-ADD CONSTRAINT FK_orders_store_id FOREIGN KEY (store_id)
+ADD CONSTRAINT store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
-GO
 
 ALTER TABLE staffs
-ADD CONSTRAINT FK_staffs_manager_id FOREIGN KEY (manager_id)
+ADD CONSTRAINT manager_id FOREIGN KEY (manager_id)
 REFERENCES staffs (staff_id);
-GO
 
 ALTER TABLE staffs
-ADD CONSTRAINT FK_staffs_store_id FOREIGN KEY (store_id)
+ADD CONSTRAINT stores_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
-GO
 
 ALTER TABLE order_items
-ADD CONSTRAINT FK_order_items_order_id FOREIGN KEY (order_id)
+ADD CONSTRAINT order_id FOREIGN KEY (order_id)
 REFERENCES orders (order_id);
-GO
 
 ALTER TABLE order_items
-ADD CONSTRAINT FK_order_items_product_id FOREIGN KEY (product_id)
+ADD CONSTRAINT product_id FOREIGN KEY (product_id)
 REFERENCES products (product_id);
-GO
 
 ALTER TABLE products
-ADD CONSTRAINT FK_products_category_id FOREIGN KEY (category_id)
+ADD CONSTRAINT category_id FOREIGN KEY (category_id)
 REFERENCES categories (category_id);
-GO
 
 ALTER TABLE products
-ADD CONSTRAINT FK_products_brand_id FOREIGN KEY (brand_id)
+ADD CONSTRAINT brand_id FOREIGN KEY (brand_id)
 REFERENCES brands (brand_id);
-GO
 
 ALTER TABLE stocks
-ADD CONSTRAINT FK_stocks_product_id FOREIGN KEY (product_id)
+ADD CONSTRAINT products_id FOREIGN KEY (product_id)
 REFERENCES products (product_id);
-GO
 
 ALTER TABLE stocks
-ADD CONSTRAINT FK_stocks_store_id FOREIGN KEY (store_id)
+ADD CONSTRAINT PK_store_id FOREIGN KEY (store_id)
 REFERENCES stores (store_id);
-GO
-
--- Add checks
-ALTER TABLE customers
-ADD CONSTRAINT check_phone_customers CHECK (phone LIKE '+212%');
-GO
-
-ALTER TABLE staffs
-ADD CONSTRAINT check_phone_staffs CHECK (phone LIKE '+212%');
-GO
-
-ALTER TABLE staffs
-ADD CONSTRAINT check_email_staff CHECK (CHARINDEX('@', email) > 0);
-GO
-
-ALTER TABLE staffs
-ADD CONSTRAINT check_name_staffs CHECK (first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%');
-GO
 
 ALTER TABLE customers
-ADD CONSTRAINT check_name_customers CHECK (first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%');
-GO
+ADD CONSTRAINT check_numero_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_staff_telephone 
+CHECK (phone LIKE '+212%');
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_email_staff
+CHECK (CHARINDEX('@', email) > 0);
+
+ALTER TABLE staffs
+ADD CONSTRAINT check_name_staffs
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
+
+ALTER TABLE customers
+ADD CONSTRAINT check_name_customer
+CHECK (
+    first_name NOT LIKE '%[0-9]%' AND last_name NOT LIKE '%[0-9]%'
+);
 
 ALTER TABLE orders
-ADD CONSTRAINT check_status CHECK (order_status IN ('confirmed', 'rejected', 'in process'));
-GO
+ADD CONSTRAINT check_status
+CHECK (
+   order_status IN ('confirmed', 'rejected', 'in process')
+);
 
 ALTER TABLE order_items
-ADD CONSTRAINT check_discount_range CHECK (discount >= 0 AND discount <= 100);
-GO
+ADD CONSTRAINT check_discount_range 
+CHECK (
+    discount >= 0 AND discount <= 100
+);
+go
+  /*-------------------------------------------------------------------------------------*/
+ /*--------------------------------[ F U N C T I O N S ]--------------------------------*/
+/*-------------------------------------------------------------------------------------*/
 
--- Create functions
-CREATE FUNCTION calculatePriceAfterDiscount (@oldPrice INT, @discount INT, @quantity INT)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @newPrice INT;
-    SET @newPrice = (@oldPrice - (@oldPrice * @discount / 100)) * @quantity;
-    RETURN @newPrice;
-END;
-GO
+-- calculate the new price of an item after the discount
 
-CREATE FUNCTION orderTotalPrice(@orderId INT)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @totalPrice INT;
-    SELECT @totalPrice = SUM(list_price)
-    FROM order_items 
-    WHERE order_id = @OrderId;
-    IF @totalPrice IS NULL
-        SET @totalPrice = 0;
-    RETURN @totalPrice;
-END;
-GO
+create FUNCTION calculatePriceAfterDiscount (@oldPrice int, @discount int, @quantity int)
+RETURNS int
+as
+begin
+	declare @newPrice int;
+	set @newPrice = (@oldPrice - (@oldPrice * @discount / 100)) * @quantity;
+	return @newPrice;
+end;
+go
 
-CREATE FUNCTION productStillInStock(@productId INT, @storeId INT)
-RETURNS INT
-AS
-BEGIN
-    DECLARE @num INT;
-    SELECT @num = quantity
+-- calculate total price of an order 
+
+
+create function orderTotalPrice(@orderId int)
+returns int
+as
+begin
+	declare @totalPrice int;
+	select @totalPrice = sum(list_price)
+	from order_items 
+	where order_id = @OrderId;
+	if @totalPrice is null
+	set @totalPrice = 0
+	return @totalPrice;
+end;
+go
+
+
+
+-- get number of specific product still in stock in a specific store
+
+create function productStillInStock(@productId int, @storeId int)
+returns int
+as
+begin
+	declare @num int;
+	select @num = quantity
     FROM stocks
     WHERE store_id = @storeId
     AND product_id = @productId;
-    IF @num IS NULL
-        SET @num = 0;
-    RETURN @num;
-END;
-GO
+	if @num is null
+	set @num = 0
+	return @num;
+end;
+go
+
+
+
+-- calculate the total sales amount for a given store over a specified period
 
 CREATE FUNCTION CalculateTotalSalesForStore(
     @store_id INT,
     @start_date DATE,
     @end_date DATE
 )
-RETURNS INT
+RETURNS int
 AS
 BEGIN
-    DECLARE @total_sales INT;
+    DECLARE @total_sales int;
     
     SELECT @total_sales = COALESCE(dbo.orderTotalPrice(oi.order_id), 0)
     FROM orders o
@@ -238,7 +249,10 @@ BEGIN
     
     RETURN @total_sales;
 END;
-GO
+go
+
+
+--find customers
 
 CREATE FUNCTION FindCustomerByName(@partial_name VARCHAR(50))
 RETURNS TABLE
@@ -255,59 +269,59 @@ RETURN
         first_name LIKE '%' + @partial_name + '%' OR
         last_name LIKE '%' + @partial_name + '%'
 );
-GO
+go
 
--- Create procedures
+
+                                                                                                                                                                                                              
+  /*---------------------------------------------------------------------------------------*/
+ /*--------------------------------[ P R O C E D U R E S ]--------------------------------*/
+/*---------------------------------------------------------------------------------------*/
+
+-- place an order
 CREATE PROCEDURE PlaceOrder
     @customer_id INT,
     @required_date DATE,
     @staff_id INT
 AS
 BEGIN
-    DECLARE @store_id INT;
-    SELECT @store_id = store_id FROM staffs WHERE staff_id = @staff_id;
-    
-    DECLARE @order_status VARCHAR(20) = 'in process';
+	DECLARE @store_id INT;
+	select @store_id = store_id from staffs where staff_id = @staff_id;
+	
+	DECLARE @order_status VARCHAR(20) = 'in process';
 
-    PRINT @customer_id;
-    PRINT @order_status;
-    PRINT GETDATE();
-    PRINT @required_date;
-    PRINT NULL;
-    PRINT @store_id;
-    PRINT @staff_id;
-
+	print @customer_id ;
+	print @order_status ;
+	print GETDATE() ;
+	print @required_date ;
+	print NULL ;
+	print @store_id  ;
+	print @staff_id;
     INSERT INTO orders (customer_id, order_status, order_date, required_date, shipped_date, store_id, staff_id)
     VALUES (@customer_id, @order_status, GETDATE(), @required_date, NULL, @store_id, @staff_id);
 END;
-GO
 
+
+go
+
+-- place order_item
 CREATE PROCEDURE PlaceOrderItem
     @product_id INT,
     @quantity INT,
+    
     @discount INT
 AS
 BEGIN
-    DECLARE @order_id INT = (SELECT TOP 1 order_id FROM orders ORDER BY order_id DESC);
-    DECLARE @list_price INT = (SELECT dbo.calculatePriceAfterDiscount((SELECT list_price FROM products WHERE product_id = @product_id), @discount, @quantity));
+declare @order_id int = (select top 1 order_id from orders order by order_id desc)
+declare @list_price INT  =
+(select dbo.calculatePriceAfterDiscount((select list_price from products where product_id = @product_id), @discount, @quantity))
 
     INSERT INTO order_items (order_id, product_id, quantity, list_price, discount)
     VALUES (@order_id, @product_id, @quantity, @list_price, @discount);
 END;
-GO
+go
 
-CREATE PROCEDURE UpdateStockQuantity_Add
-    @store_id INT,
-    @product_id INT,
-    @quantity INT
-AS
-BEGIN
-    UPDATE stocks
-    SET quantity = quantity + @quantity
-    WHERE store_id = @store_id AND product_id = @product_id;
-END;
-GO
 
+-- update stock quantity in a store (removing products)
 CREATE PROCEDURE UpdateStockQuantity_Remove
     @store_id INT,
     @product_id INT,
@@ -318,8 +332,10 @@ BEGIN
     SET quantity = quantity - @quantity
     WHERE store_id = @store_id AND product_id = @product_id;
 END;
-GO
+go
 
+
+-- add an new product
 CREATE PROCEDURE AddNewProduct
     @product_name VARCHAR(20),
     @brand_id INT,
@@ -331,9 +347,16 @@ BEGIN
     INSERT INTO products (product_name, brand_id, category_id, model_year, list_price)
     VALUES (@product_name, @brand_id, @category_id, @model_year, @list_price);
 END;
-GO
+go
 
--- Create views
+
+/*---------------------------------------------------------------------------------------*/
+ /*-------------------------------------[ V I E W S ]------------------------------------*/
+/*--------------------------------------------------------------------------------------*/
+
+--Customer Orders View
+
+
 CREATE VIEW Customer_order AS
 SELECT 
     o.order_id, 
@@ -349,7 +372,12 @@ JOIN
     stores sr ON o.store_id = sr.store_id
 JOIN 
     customers c ON o.customer_id = c.customer_id;
-GO
+
+
+go
+
+
+--Product Information View
 
 CREATE VIEW Product_info AS
 SELECT 
@@ -360,11 +388,97 @@ SELECT
     p.list_price, 
     s.quantity 
 FROM 
-    stocks s
-JOIN products p ON s.product_id = p.product_id
-JOIN brands b ON p.brand_id = b.brand_id
-JOIN categories c ON p.category_id = c.category_id;
-GO
+    stocks s 
+JOIN 
+    products p ON s.product_id = p.product_id 
+JOIN 
+    brands b ON b.brand_id = p.brand_id 
+JOIN 
+    categories c ON c.category_id = p.category_id;
+
+go
+
+--Products in Staff Store View
+
+
+CREATE VIEW Products_in_Staff_Store AS
+SELECT 
+    p.product_id, 
+    p.product_name, 
+    b.brand_name, 
+    c.category_name, 
+    p.model_year, 
+    p.list_price, 
+    s.quantity 
+FROM 
+    products p 
+JOIN 
+    stocks s ON s.product_id = p.product_id
+JOIN 
+    stores st ON st.store_id = s.store_id 
+JOIN 
+    staffs sf ON st.store_id = sf.store_id
+LEFT JOIN 
+    brands b ON p.brand_id = b.brand_id
+LEFT JOIN 
+    categories c ON p.category_id = c.category_id;
+
+go
+
+--Product Info for Customer View
+
+
+CREATE VIEW Product_info_for_Customer AS
+SELECT 
+    o.order_id, 
+    o.order_status, 
+    o.order_date, 
+    o.required_date, 
+    o.shipped_date, 
+    sr.store_name, 
+    sf.first_name + ' ' + sf.last_name AS staff_full_name
+FROM 
+    orders o
+JOIN 
+    stores sr ON o.store_id = sr.store_id 
+JOIN 
+    staffs sf ON o.staff_id = sf.staff_id;
+
+
+go
+
+
+CREATE VIEW Store_names AS
+SELECT 
+    store_id, 
+    store_name 
+FROM 
+    stores;
+
+go
+
+--Total Sales by Store
+
+CREATE VIEW Total_sales_by_store AS
+SELECT 
+    st.store_name, 
+    SUM(oi.list_price * oi.quantity) AS total_sales
+FROM 
+    order_items oi
+JOIN 
+    orders o ON oi.order_id = o.order_id
+JOIN 
+    stores st ON o.store_id = st.store_id
+GROUP BY 
+    st.store_name;
+
+go
+
+
+
+
+
+
 
 
 -- Trigger to automatically update stock quantity when an order item is added

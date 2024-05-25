@@ -44,7 +44,7 @@ require_once("./db_connection.php");
               <li><span>TEST CONSTRAINT</span></li>
               <li><span>FUNCTIONS TEST</span></li>
               <li><span>FUNCTIONS TEST 2</span></li>
-              <li><span>customer</span></li>
+              <li><span>view test</span></li>
             </ul>
           </nav>
           <ul class="l-main-content main-content">
@@ -98,7 +98,6 @@ require_once("./db_connection.php");
                   <label for="Statement">Statement</label>
                   <select name="Statement" id="Statement">
                     <option value="INSERT">INSERT</option>
-                    <option value="UPDATE">UPDATE</option>
                   </select>
                   <label for="table">table</label>
                   <select name="table" id="table">
@@ -269,48 +268,50 @@ require_once("./db_connection.php");
             </li>
             <li class="l-section section">
               <div class="hire">
-                <div class="function-card">
-                  <h5>Calculate Total Sales For Store</h5>
-                  <p>This function calculates the total sales for a store within a specified date range.</p>
-                  <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT dbo.CalculateTotalSalesForStore">
-                    <label for="arguments[]">Store ID:</label>
-                    <input type="number" name="arguments[]" required="" autocomplete="off">
-                    <br>
-                    <label for="arguments[]">Start Date:</label>
-                    <input type="date" name="arguments[]" required="" autocomplete="off">
-                    <br>
-                    <label for="arguments[]">End Date:</label>
-                    <input type="date" name="arguments[]" required="" autocomplete="off">
-                    <br>
-                    <button type="submit">Calculate Total Sales</button>
-                  </form>
-                </div>
-                <div class="function-card">
-                  <h5>Find Customer By Name</h5>
-                  <p>This function retrieves the top 5 customers whose first name or last name matches the provided partial name.</p>
-                  <form class="functionForm">
-                    <input type="hidden" name="query" value="SELECT * FROM dbo.FindCustomerByName">
-                    <label for="arguments[]">Partial Name:</label>
-                    <input type="text" name="arguments[]" required="" autocomplete="off">
-                    <br>
-                    <button type="submit">Find Customers</button>
-                  </form>
+                <h3>Click any view card to select the data from it</h3>
+                <div class="table-select-cards">
+                  <?php
+                  require_once("./db_connection.php");
+                  $query = 'SELECT TABLE_NAME AS name FROM INFORMATION_SCHEMA.VIEWS';
+                  $views = $conn->query($query);
+                  while ($row = $views->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<div class="table-select-card" data-view="' . $row["name"] . '">
+                        <button>' . str_replace('_', ' ', $row["name"]) . '</button>
+                      </div>';
+                  }
+                  ?>
                 </div>
               </div>
             </li>
-          </ul>
-        </div>
+            <li class="l-section section">
+              <div class="hire">
+                <h3>Click any view card to select the data from it</h3>
+                <div class="table-select-cards">
+                  <?php
+                  require_once("./db_connection.php");
+                  $query = 'SELECT TABLE_NAME AS name FROM INFORMATION_SCHEMA.VIEWS';
+                  $views = $conn->query($query);
+                  while ($row = $views->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<div class="table-select-card" data-view="' . $row["name"] . '">
+                        <button>' . str_replace('_', ' ', $row["name"]) . '</button>
+                      </div>';
+                  }
+                  ?>
+                </div>
+              </div>
+            </li>
+        </ul>
       </div>
     </div>
-    <ul class="outer-nav">
-      <li class="is-active">intro</li>
-      <li>SELECT TABLE</li>
-      <li>TEST CONSTRAINT</li>
-      <li>FUNCTIONS TEST</li>
-      <li>FUNCTIONS TEST 2</li>
-      <li>customer</li>
-    </ul>
+  </div>
+  <ul class="outer-nav">
+    <li class="is-active">intro</li>
+    <li>SELECT TABLE</li>
+    <li>TEST CONSTRAINT</li>
+    <li>FUNCTIONS TEST</li>
+    <li>FUNCTIONS TEST 2</li>
+    <li>view test</li>
+  </ul>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -423,6 +424,31 @@ require_once("./db_connection.php");
           error: function(xhr, status, error) {
             // Handle errors
             alert("An error occurred: " + xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Handle click event on view cards
+      $(".view-select-card").click(function() {
+        var viewName = $(this).data("view");
+
+        // Send AJAX request to fetch view data
+        $.ajax({
+          url: 'fetch_view_data.php',
+          method: 'POST',
+          data: {
+            view: viewName
+          },
+          success: function(response) {
+            // Display the response in the view-data div
+            $("#view-data").html(response);
+          },
+          error: function(xhr, status, error) {
+            // Handle any errors
+            alert('Error: ' + xhr.status + ' - ' + error);
           }
         });
       });

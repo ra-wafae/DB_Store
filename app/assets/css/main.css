@@ -1894,6 +1894,7 @@ body {
 
 .table-select-cards .table-select-card button {
     min-width: 200px;
+    max-width: 300px;
     position: relative;
     padding: 10px 20px;
     border-radius: 7px;
