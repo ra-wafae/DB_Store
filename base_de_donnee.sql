@@ -517,32 +517,6 @@ BEGIN
 END;
 GO
 
--- Trigger to log changes in the orders table
-CREATE TRIGGER trg_LogOrderChanges
-ON orders
-AFTER INSERT, UPDATE, DELETE
-AS
-BEGIN
-    DECLARE @order_id INT, @operation VARCHAR(10);
-
-    IF EXISTS(SELECT * FROM inserted)
-    BEGIN
-        IF EXISTS(SELECT * FROM deleted)
-            SET @operation = 'UPDATE';
-        ELSE
-            SET @operation = 'INSERT';
-    END
-    ELSE
-    BEGIN
-        SET @operation = 'DELETE';
-    END
-
-    INSERT INTO OrderLog (order_id, operation, change_date)
-    SELECT ISNULL(i.order_id, d.order_id), @operation, GETDATE()
-    FROM inserted i FULL OUTER JOIN deleted d ON i.order_id = d.order_id;
-END;
-GO
-
 -- Trigger to ensure that the order status is only updated to allowed values
 CREATE TRIGGER trg_ValidateOrderStatus
 ON orders
