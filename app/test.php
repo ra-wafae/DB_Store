@@ -275,29 +275,13 @@ require_once("./db_connection.php");
                   $query = 'SELECT TABLE_NAME AS name FROM INFORMATION_SCHEMA.VIEWS';
                   $views = $conn->query($query);
                   while ($row = $views->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<div class="table-select-card" data-view="' . $row["name"] . '">
-                        <button>' . str_replace('_', ' ', $row["name"]) . '</button>
-                      </div>';
-                  }
-                  ?>
-                </div>
-              </div>
-            </li>
-            <li class="l-section section">
-              <div class="hire">
-                <h3>Click any view card to select the data from it</h3>
-                <div class="table-select-cards">
-                  <?php
-                  require_once("./db_connection.php");
-                  $query = 'SELECT TABLE_NAME AS name FROM INFORMATION_SCHEMA.VIEWS';
-                  $views = $conn->query($query);
-                  while ($row = $views->fetch(PDO::FETCH_ASSOC)) {
                     echo '<div class="view-select-card" data-view="' . $row["name"] . '">
                         <button>' . str_replace('_', ' ', $row["name"]) . '</button>
                       </div>';
                   }
                   ?>
                 </div>
+                <div id="view-data"></div>
               </div>
             </li>
         </ul>
@@ -433,8 +417,7 @@ require_once("./db_connection.php");
     $(document).ready(function() {
       // Handle click event on view cards
       $(".view-select-card").click(function() {
-
-        var viewName = str_replace(' ', '_', $(this).data("view"));
+        var viewName = $(this).data("view");
 
         // Send AJAX request to fetch view data
         $.ajax({
